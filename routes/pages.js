@@ -6,11 +6,11 @@ const router = express.Router();
 router.get("/", (req, res) => {
   res.render("index");
 });
-
+//註冊
 router.get("/register", (req, res) => {
   res.render("register");
 });
-
+//登入
 router.get("/login", (req, res) => {
   res.render("login");
 });
