@@ -21,14 +21,6 @@ app.set("view engine", "hbs");
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-//mysql連線
-db.connect((e) => {
-  if (e) {
-    console.log(e);
-  } else {
-    console.log("MySQL connected");
-  }
-});
 //使用router
 app.use("/", require("./routes/pages"));
 app.use("/auth", require("./routes/auth"));
