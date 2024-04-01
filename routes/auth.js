@@ -16,7 +16,7 @@ router.get(
 );
 
 router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
-  return res.redirect("/profile");
+  return res.redirect("/profile"); //google登入後會去的頁面
 }); //已經經過google驗證才能使用的route
 
 module.exports = router;
