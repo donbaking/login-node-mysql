@@ -6,6 +6,13 @@ const passport = require("passport");
 router.get("/login", (req, res) => {
   return res.render("login");
 });
+router.get("/logout", (req, res) => {
+  req.logOut((err) => {
+    if (err) throw err;
+    return res.redirect("/");
+  });
+});
+
 //google登入
 router.get(
   "/google",
