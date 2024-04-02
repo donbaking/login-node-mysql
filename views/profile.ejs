@@ -32,5 +32,19 @@
         <li>Google信箱為： <%= user[0].emailaddress %></li>
       </ul>
     </section>
+
+    <section class="posts">
+      <% if (posts.length === 0) { %>
+      <p>沒有找到任何貼文。</p>
+      <% } else { %> <% posts.forEach(function(post) { %>
+      <div class="card" style="width: 18rem; margin: 1rem">
+        <div class="card-body">
+          <h5 class="card-title"><%= post.post_title %></h5>
+          <p class="card-text"><%= post.post_content %></p>
+          <a href="#" class="btn btn-primary"> <%= post.post_date %> </a>
+        </div>
+      </div>
+      <% }); %> <% } %>
+    </section>
   </body>
 </html>

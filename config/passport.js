@@ -1,18 +1,22 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20");
 const db = require("../module/cndatabase");
+const localstrategy = require("passport-local");
+const bcrypt = require("bcryptjs");
 
 passport.serializeUser((user, done) => {
   console.log("序列化使用者");
   // console.log(user); //可以看到儲存在mysql內的使用者資料
   // console.log(user);可以看user資料
   // console.log(user);
+  //這裡的user變數內容為usertable裡的userid
   done(null, user); //將mysql內的userid存在session裡
   //並且將id簽名後以cookie的形式傳給使用者
 });
 
 passport.deserializeUser((user, done) => {
-  console.log("解序列化使用者去找到資料庫內的資料");
+  //console.log("解序列化使用者去找到資料庫內的資料");
+  //console.log(user);
   db.query(
     "SELECT * FROM users WHERE userid = ?", //查詢table中的userid
     [user],
@@ -23,7 +27,7 @@ passport.deserializeUser((user, done) => {
     }
   );
 });
-
+//google登入
 passport.use(
   new GoogleStrategy(
     {
@@ -83,4 +87,42 @@ passport.use(
       }
     }
   )
+);
+
+//locallogin
+//自動套入login.ejs內的form值要注意變數名
+passport.use(
+  new localstrategy(async (username, password, done) => {
+    try {
+      console.log(username);
+      //找到sql裡對應的使用者資訊
+      db.query(
+        "SELECT * FROM users WHERE emailaddress = ?",
+        [username],
+        async (e, result) => {
+          // console.log(result);
+          //沒找到使用者導回註冊頁面
+          if (result.length === 0) {
+            done(null, false);
+          } else {
+            console.log("已確認使用者，比對密碼中");
+            let passwordcheck = await bcrypt.compare(
+              password,
+              result[0].userpassword
+            );
+            if (passwordcheck) {
+              console.log("確認成功");
+              console.log(result);
+              done(null, result[0].userid); //將id傳給序列化及解序列化過程
+            } else {
+              console.log("密碼錯誤");
+              done(null, false);
+            }
+          }
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  })
 );

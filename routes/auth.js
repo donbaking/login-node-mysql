@@ -27,7 +27,7 @@ router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
   return res.redirect("/profile"); //google登入後會去的頁面
 }); //已經經過google驗證才能使用的route
 
-//本地端登入
+//本地端註冊
 router.get("/signup", (req, res) => {
   return res.render("signup", { user: req.user });
 });
@@ -74,4 +74,16 @@ router.post("/signup", (req, res) => {
     }
   );
 });
+//本地端登入
+router.post(
+  "/login",
+  passport.authenticate("local", {
+    failureRedirect: "/auth/login", //登入導向的網站
+    failureFlash: "登入失敗帳號或密碼有誤，請重新嘗試", //此訊息會套在app.js裡的req.flash("error")裡
+  }),
+  (req, res) => {
+    return res.redirect("/profile");
+  }
+);
+
 module.exports = router;
