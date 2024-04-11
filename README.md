@@ -6,4 +6,5 @@
 3.由MySQL Database建立本地端註冊的使用者資訊以及儲存不同使用者自己的貼文內容.    
 4.使用bcrypt將本地端使用者密碼做加密保護.  
 5.遵循RESTful api開發方式撰寫後端api.  
-6.由Sessions確認使用者的登入狀態。  
+6.由Sessions確認使用者的登入狀態.  
+
